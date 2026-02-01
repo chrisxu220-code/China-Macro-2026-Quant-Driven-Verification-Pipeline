@@ -1,0 +1,15 @@
+﻿series,lag_months,corr,n
+sales_area,-6,,5
+sales_area,-3,0.25568460807837184,8
+sales_area,-1,0.17960495670649126,10
+sales_area,0,-0.5168644334553298,11
+sales_area,1,-0.4977808848356886,10
+sales_area,3,-0.1307151267797024,8
+sales_area,6,,5
+sales_value,-6,,5
+sales_value,-3,0.2955299626864233,8
+sales_value,-1,0.20027338007412282,10
+sales_value,0,-0.4875752568508274,11
+sales_value,1,-0.47287304336794256,10
+sales_value,3,-0.19871724675982824,8
+sales_value,6,,5
