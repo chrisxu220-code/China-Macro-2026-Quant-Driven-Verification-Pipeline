@@ -1,0 +1,118 @@
+project:
+  name: "China Macro Quant Verification"
+  timezone: "Asia/Shanghai"
+
+inputs:
+  data_excel_path: "/Users/junhuixu/Downloads/data.xlsx"
+
+property:
+  year: 2025
+  price_xlsx_path: "data/raw/housing price.xlsx"
+  panel_csv_path: "output/property/processed/housing_price_panel.csv"
+  heatmap_png_path: "output/property/figures/yoy_recovery_dashboard_heatmap_with_delta.png"
+  start_date: "2025-01-01"
+  row_gap: 1.4
+  sales_xlsx_path: "/Users/junhuixu/Downloads/housing_sales.xlsx"
+  output_dir: "output/property"
+  distribution:
+    low_tail_threshold: 95.0
+    neutral_threshold: 100.0
+    distribution_field: "yoy_index"
+  figures:
+    enabled: true
+    out_dir: "output/property/figures"
+
+paths:
+  data_dir: "data"
+  output_dir: "output"
+  logs_dir: "output/logs"
+  figures_dir: "output/figures"
+  cache_dir: "output/cache"
+
+run:
+  steps:
+    - "smoke_test"
+    - "load_and_validate_data"
+    - "build_features"
+    - "property_distribution"
+    - "property_dashboard_heatmap"
+    - "external_trade"
+    - "domestic_demand"
+    - "model_scenario"
+    - "report_build"
+
+
+
+logging:
+  level: "INFO"
+  to_file: true
+  filename: "run.log"
+
+repro:
+  seed: 42
+
+features:
+  seasonality_method: "merge_jan_feb"
+  dedup_method: "mean"
+
+  fiscal_fuse:
+    tsf_series: "tsf_increment::社会融资规模增量统计__2"
+    target_series: "industrial_value_added::同比增长"
+    lead_months: 12
+    zscore: true
+
+  paradigm_shift:
+    new_engine_series:
+      - "fai_ytd_growth::计算机、通信和其他电子设备制造业固定资产投资额累计增长(%)"
+      - "fai_ytd_growth::电气机械和器材制造业固定资产投资额累计增长(%)"
+    old_economy_series:
+      - "fai_ytd_growth::专用设备制造业固定资产投资额累计增长(%)"
+      - "fai_ytd_growth::汽车制造业固定资产投资额累计增长(%)"
+    scale: "robust"
+    composite: "diff"
+    winsorize: 0.01
+
+external:
+  sheet: "出口"
+  output_dir: "output/external"
+  figures_dir: "output/external/figures"
+  headline_period: "11月"     # or "1至11月"
+  ca_period: "1至11月"
+
+  bucket_map:
+    美国: "DM"
+    欧洲联盟: "DM"
+    东南亚国家联盟: "EM"
+    区域全面经济伙伴关系协定（RCEP）成员国: "EM"
+    共建“一带一路”国家和地区: "EM"
+
+domestic:
+  output_dir: "output/domestic"
+  figures_dir: "output/domestic/figures"
+  method: "zscore_mean"
+
+  # ✅ use dataset::series to avoid any future name collisions
+  consumption_series:
+    - "consumption::月度社会消费品零售总额（亿元）"
+    - "consumption::服务业生产指数(当月同比增速%)"
+    - "consumption::餐饮收入（亿元）"
+
+  investment_series:
+    - "fai_ytd_growth::制造业固定资产投资额累计增长(%)"
+    - "fai_ytd_growth::计算机、通信和其他电子设备制造业固定资产投资额累计增长(%)"
+    - "fai_ytd_growth::电气机械和器材制造业固定资产投资额累计增长(%)"
+
+  fiscal_series:
+    - "tsf_increment::社会融资规模增量统计__2"
+    - "new_loans::当月(亿元)"
+
+model:
+  output_dir: "output/model"
+  figures_dir: "output/model/figures"
+  baseline_growth: 0.045
+  beta_domestic: 0.0030
+  beta_property: 0.0020
+  beta_external: 0.0015
+  n_sims: 2000
+  param_sigma_scale: 0.25
+
