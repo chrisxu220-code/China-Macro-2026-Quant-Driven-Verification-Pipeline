@@ -70,4 +70,4 @@ To replicate the analysis and regenerate the report:
 
 * **The Machine Thinking:** Credit transmission is now state-dependent on collateral values. Lowering the cost of capital (interest rates) is ineffective if the asset base (property) remains under balance-sheet pressure.
 
-![View Full PDF Report](China Macro 2026.pdf) | ![View Methodology](Methodology.md)
+[View Full PDF Report](China%20Macro%202026.pdf) | [View Methodology](Methodology.md)
