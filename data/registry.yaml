@@ -1,0 +1,89 @@
+version: 1
+
+datasets:
+  - dataset: tsf_increment
+    sheet: "社会融资规模增量统计"
+    kind: "multiheader_table"
+    date_col_hint: "月份"
+    frequency: "M"
+    unit: "亿元"
+    notes: "社会融资规模增量及分项（多行表头）"
+
+  - dataset: fai_ytd_growth
+    sheet: "固投月度增长"
+    kind: "wide_indicator_dates"
+    indicator_col: "指标"
+    frequency: "M"
+    unit: "%"
+    notes: "固投累计增速（宽表：行=指标，列=月份）"
+
+  - dataset: usdcny
+    sheet: "USD-CNY"
+    kind: "simple_table"
+    date_col_hint: "日期"
+    frequency: "M"
+    unit: "CNY per USD"
+    notes: "月度（看起来是月初/月底记录）"
+
+  - dataset: consumption
+    sheet: "消费（没有1-2月）"
+    kind: "simple_table"
+    date_col_hint: "月份"
+    frequency: "M"
+    unit: "亿元 / %"
+    notes: "社零等（表头为单行）"
+
+  - dataset: m2_m1_m0
+    sheet: "M2"
+    kind: "multiheader_table"
+    date_col_hint: "月"
+    frequency: "M"
+    unit: "亿元 / %"
+    notes: "M2/M1/M0 数量、同比、环比（多行表头）"
+
+  - dataset: pmi
+    sheet: "PMI"
+    kind: "simple_table"
+    date_col_hint: "日期"
+    frequency: "M"
+    unit: "index"
+    notes: "PMI 及分项"
+
+  - dataset: ppi
+    sheet: "工业品出厂价格指数(PPI)"
+    kind: "simple_table"
+    date_col_hint: "月"
+    frequency: "M"
+    unit: "index / %"
+    notes: "PPI 当月、当月同比、累计"
+
+  - dataset: new_loans
+    sheet: "新增信贷数据（亿元）"
+    kind: "simple_table"
+    date_col_hint: "月"
+    frequency: "M"
+    unit: "亿元 / %"
+    notes: "新增信贷（当月、同比、环比、累计）"
+
+  - dataset: industrial_value_added
+    sheet: "工业增加值增长（没有一月）"
+    kind: "simple_table"
+    date_col_hint: "月"
+    frequency: "M"
+    unit: "%"
+    notes: "工业增加值同比、累计"
+
+  - dataset: exports_summary
+    sheet: "出口"
+    kind: "raw_table"
+    frequency: "M"
+    unit: "万元人民币"
+    notes: "结构复杂（年度块表），先按原样读入，后续专门解析"
+
+  - dataset: new_home_price_index
+    sheet: "新房价指数"
+    kind: "new_home_price_index"
+    date_col_hint: "日期"
+    frequency: "M"
+    unit: "index"
+    notes: "城市层面：新房/二手（日期需前向填充）"
